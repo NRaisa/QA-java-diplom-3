@@ -3,6 +3,7 @@ package org.example.model;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
+import org.example.SignInRequest;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -14,53 +15,60 @@ public class LoginPage extends Header {
 
     // локатор ссылки "Зарегистрироваться"
     @FindBy(how = How.XPATH, using = "//a[text()='Зарегистрироваться']")
-    private SelenideElement REGISTER_LINK;
+    private SelenideElement registerLink;
 
     // локатор поля ввода email
     @FindBy(how = How.XPATH, using = "//input[@name='name']")
-    private SelenideElement EMAIL_INPUT_FIELD;
+    private SelenideElement emailInputField;
 
     // локатор поля ввода пароля
     @FindBy(how = How.XPATH, using = "//input[@name='Пароль']")
-    private SelenideElement PASSWORD_INPUT_FIELD;
+    private SelenideElement passwordInputField;
 
     // локатор кнопки "Войти"
     @FindBy(how = How.XPATH, using = "//button[text()='Войти']")
-    private SelenideElement SIGN_IN_BUTTON;
+    private SelenideElement signInButton;
 
     // локатор ссылки "Восстановить пароль"
     @FindBy(how = How.XPATH, using = "//a[text()='Восстановить пароль']")
-    private SelenideElement PASSWORD_RECOVERY_LINK;
+    private SelenideElement passwordRecoveryLink;
 
-    public void clickRegisterLink() {
-        REGISTER_LINK.click();
+    public void clickRegisterLink() {registerLink.click();
     }
 
     public void setEmail(String email) {
         // баг с анимацией
-        while (!Objects.equals(EMAIL_INPUT_FIELD.getValue(), email)) {
-            EMAIL_INPUT_FIELD.shouldBe(Condition.editable).setValue(email);
+        while (!Objects.equals(emailInputField.getValue(), email)) {
+            emailInputField.shouldBe(Condition.editable).setValue(email);
         }
     }
 
     public void setPassword(String password) {
-        PASSWORD_INPUT_FIELD.setValue(password);
+        passwordInputField.setValue(password);
     }
 
     public void clickSignInButton() {
-        SIGN_IN_BUTTON.click();
+        signInButton.click();
+    }
+
+    public void enterPassword(String password){
+        passwordInputField.sendKeys(password);
+    }
+
+    public void enterEmail(String email){
+        emailInputField.sendKeys(email);
     }
 
     @Step("Логин пользователя")
-    public void login(String email, String password) {
-        setEmail(email);
-        setPassword(password);
+    public void login(SignInRequest signInRequest) {
+        enterEmail(signInRequest.getEmail());
+        enterPassword(signInRequest.getPassword());
         clickSignInButton();
     }
 
     @Step("Переход на страницу восстановления пароля")
     public void clickPasswordRecoveryLink() {
-        PASSWORD_RECOVERY_LINK.click();
+        passwordRecoveryLink.click();
     }
 
 }

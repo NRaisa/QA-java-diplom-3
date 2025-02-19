@@ -1,0 +1,32 @@
+-------------------------------------------------------------------------------
+Test set: org.example.RegisterUserTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 8.812 s <<< FAILURE! - in org.example.RegisterUserTest
+registerUserWithShortPassword(org.example.RegisterUserTest)  Time elapsed: 4.448 s  <<< ERROR!
+org.openqa.selenium.remote.http.ConnectionFailedException: 
+Unable to establish websocket connection to http://localhost:51881/devtools/browser/1d0070da-4cf4-446d-a68a-23e584140865
+Build info: version: '4.6.0', revision: '79f1c02ae20'
+System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '23'
+Driver info: driver.version: SelenideDriver
+selenide.url: https://stellarburgers.nomoreparties.site/
+selenide.baseUrl: http://localhost:8080
+	at org.example.RegisterUserTest.setUp(RegisterUserTest.java:30)
+
+registerUserWithShortPassword(org.example.RegisterUserTest)  Time elapsed: 4.449 s  <<< ERROR!
+java.lang.IllegalStateException: No webdriver is bound to current thread: 1. You need to call open(url) first.
+	at org.example.RegisterUserTest.tearDown(RegisterUserTest.java:42)
+
+registerUserSuccessfully(org.example.RegisterUserTest)  Time elapsed: 4.36 s  <<< ERROR!
+org.openqa.selenium.remote.http.ConnectionFailedException: 
+Unable to establish websocket connection to http://localhost:51929/devtools/browser/441fd956-e94b-4c75-bbc7-cffcd09f6e5d
+Build info: version: '4.6.0', revision: '79f1c02ae20'
+System info: os.name: 'Windows 11', os.arch: 'amd64', os.version: '10.0', java.version: '23'
+Driver info: driver.version: SelenideDriver
+selenide.url: https://stellarburgers.nomoreparties.site/
+selenide.baseUrl: http://localhost:8080
+	at org.example.RegisterUserTest.setUp(RegisterUserTest.java:30)
+
+registerUserSuccessfully(org.example.RegisterUserTest)  Time elapsed: 4.36 s  <<< ERROR!
+java.lang.IllegalStateException: No webdriver is bound to current thread: 1. You need to call open(url) first.
+	at org.example.RegisterUserTest.tearDown(RegisterUserTest.java:42)
+

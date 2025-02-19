@@ -1,12 +1,13 @@
 package org.example;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.rules.ExternalResource;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.junit.rules.ExternalResource;
 
 public class DriverRule extends ExternalResource {
     private WebDriver driver;
@@ -30,9 +31,6 @@ public class DriverRule extends ExternalResource {
         else {
             initChrome();
         }
-
-        // Selenide
-//        WebDriverRunner.setWebDriver(driver);
     }
 
     private void initFirefox() {

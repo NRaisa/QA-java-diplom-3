@@ -1,21 +1,24 @@
 package org.example;
 
 import io.qameta.allure.junit4.DisplayName;
-import junitparams.JUnitParamsRunner;
+
 import org.junit.*;
-import org.junit.runner.RunWith;
+
 import org.example.model.LoginPage;
 import org.example.model.MainPage;
 import org.example.model.RegistrationPage;
+import org.openqa.selenium.WebDriver;
+
+import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.*;
 
 import static org.example.generator.UserGenerator.*;
 
-@RunWith(JUnitParamsRunner.class)
+
 @DisplayName("Регистрация")
 public class RegisterUserTest {
-
+    private WebDriver driver;
     MainPage mainPage;
     LoginPage loginPage;
     RegistrationPage registrationPage;
@@ -35,6 +38,7 @@ public class RegisterUserTest {
 
         registrationPage = page(RegistrationPage.class);
         newEmail = getNewRandomEmail();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
 
     @After

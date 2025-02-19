@@ -1,19 +1,22 @@
 package org.example;
 
 import io.qameta.allure.junit4.DisplayName;
-import junitparams.JUnitParamsRunner;
+
 import org.junit.*;
-import org.junit.runner.RunWith;
+
 import org.example.model.ConstructorPage;
 import org.example.model.MainPage;
+import org.openqa.selenium.WebDriver;
+
+import java.time.Duration;
 
 import static com.codeborne.selenide.Selenide.*;
 
 
-@RunWith(JUnitParamsRunner.class)
+
 @DisplayName("Вкладки конструктора")
 public class SectionsTest {
-
+    private WebDriver driver;
     MainPage mainPage;
     ConstructorPage constructorPage;
 
@@ -25,6 +28,7 @@ public class SectionsTest {
         driverRule.getDriver();
         mainPage = open(MainPage.MAIN_PAGE_URL, MainPage.class);
         constructorPage = page(ConstructorPage.class);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
 
     @After

@@ -4,6 +4,8 @@ import com.codeborne.selenide.SelenideElement;
 import io.qameta.allure.Step;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import com.codeborne.selenide.Selectors.*;
+import static com.codeborne.selenide.Selenide.*;
 
 
 
@@ -13,23 +15,25 @@ public class MainPage extends Header {
 
     // локатор кнопки "Войти в аккаунт"
     @FindBy(how = How.XPATH, using = "//button[text()='Войти в аккаунт']")
-    private SelenideElement SIGN_IN_BUTTON;
+    private SelenideElement signInButton;
 
     // локатор кнопки "Оформить заказ"
     @FindBy(how = How.XPATH, using = "//button[text()='Оформить заказ']")
-    private SelenideElement CHECKOUT_BUTTON;
+    private SelenideElement checkoutButton;
 
     @Step("Переход на страницу логина через кнопку 'Войти в аккаунт'")
     public void clickSignInButton() {
-        SIGN_IN_BUTTON.click();
+        signInButton.click();
     }
 
     public boolean checkIsCheckOutButtonEnabled() {
-        return CHECKOUT_BUTTON.isEnabled();
+        return checkoutButton.isEnabled();
     }
 
     public boolean checkIsSignInButtonEnabled() {
-        return SIGN_IN_BUTTON.isEnabled();
+        return signInButton.isEnabled();
     }
 
 }
+
+

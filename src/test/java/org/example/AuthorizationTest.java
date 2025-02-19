@@ -1,17 +1,19 @@
 package org.example;
 
 import io.qameta.allure.junit4.DisplayName;
-import junitparams.JUnitParamsRunner;
+
 import org.example.generator.UserGenerator;
 import org.example.model.*;
 import org.junit.*;
-import org.junit.runner.RunWith;
+
 import org.openqa.selenium.WebDriver;
 
 
+import java.time.Duration;
+
 import static com.codeborne.selenide.Selenide.*;
 
-@RunWith(JUnitParamsRunner.class)
+
 @DisplayName("Авторизация")
 public class AuthorizationTest {
     private WebDriver driver;
@@ -20,6 +22,9 @@ public class AuthorizationTest {
     RegistrationPage registrationPage;
     PasswordRecoveryPage passwordRecoveryPage;
     PersonalAccountPage personalAccountPage;
+    UserRequest testUser;
+    String accessToken;
+    SignInRequest signInRequest;
 
     @Rule
     public DriverRule driverRule = new DriverRule();
@@ -32,6 +37,17 @@ public class AuthorizationTest {
         registrationPage = page(RegistrationPage.class);
         passwordRecoveryPage = page(PasswordRecoveryPage.class);
         personalAccountPage = page(PersonalAccountPage.class);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        testUser = UserGenerator.getUniqueUser();
+
+        SuccessSignUp signUpResponse = ApiSteps.createUniqueUser(testUser)
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(SuccessSignUp.class);
+        accessToken = signUpResponse.getAccessToken();
+
+        signInRequest = new SignInRequest(testUser.getEmail(), testUser.getPassword());
     }
 
     @After
@@ -46,6 +62,7 @@ public class AuthorizationTest {
         mainPage.clickSignInButton();
         loginPage.login(UserGenerator.WORKING_EMAIL, UserGenerator.DEFAULT_PASSWORD);
         Assert.assertTrue(mainPage.checkIsCheckOutButtonEnabled());
+        ApiSteps.deleteUser(accessToken);
     }
 
     @Test
@@ -54,6 +71,7 @@ public class AuthorizationTest {
         mainPage.clickPersonalAccountLink();
         loginPage.login(UserGenerator.WORKING_EMAIL, UserGenerator.DEFAULT_PASSWORD);
         Assert.assertTrue(mainPage.checkIsCheckOutButtonEnabled());
+        ApiSteps.deleteUser(accessToken);
     }
 
     @Test
@@ -64,6 +82,7 @@ public class AuthorizationTest {
         registrationPage.clickSignInLink();
         loginPage.login(UserGenerator.WORKING_EMAIL, UserGenerator.DEFAULT_PASSWORD);
         Assert.assertTrue(mainPage.checkIsCheckOutButtonEnabled());
+        ApiSteps.deleteUser(accessToken);
     }
 
     @Test
@@ -74,6 +93,7 @@ public class AuthorizationTest {
         passwordRecoveryPage.clickSignInLink();
         loginPage.login(UserGenerator.WORKING_EMAIL, UserGenerator.DEFAULT_PASSWORD);
         Assert.assertTrue(mainPage.checkIsCheckOutButtonEnabled());
+        ApiSteps.deleteUser(accessToken);
     }
 
     @Test
