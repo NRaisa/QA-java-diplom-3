@@ -2,6 +2,7 @@ package org.example;
 
 import io.qameta.allure.junit4.DisplayName;
 
+import io.restassured.response.Response;
 import org.junit.*;
 
 import org.example.model.LoginPage;
@@ -42,7 +43,7 @@ public class RegisterUserTest {
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
         clearBrowserLocalStorage();
     }
 
@@ -53,12 +54,32 @@ public class RegisterUserTest {
         registrationPage.register(DEFAULT_NAME, newEmail, DEFAULT_PASSWORD);
         loginPage.login(newEmail, DEFAULT_PASSWORD);
         Assert.assertTrue(mainPage.checkIsCheckOutButtonEnabled());
+        Response response = ApiSteps.signInWithSignInRequest(new SignInRequest(newEmail, DEFAULT_PASSWORD));
+        String accessToken = response
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(SuccessSignUp.class).getAccessToken();
+
+        ApiSteps.deleteUser(accessToken);
+
     }
 
     @Test
     @DisplayName("Регистрация со слишком коротким паролем")
     public void registerUserWithShortPassword() {
         registrationPage.register(DEFAULT_NAME, newEmail, SHORT_PASSWORD);
-        Assert.assertTrue(registrationPage.checkIsIncorrectPasswordTextVisible());
+        
+        boolean displayed = registrationPage.checkIsIncorrectPasswordTextVisible();
+
+        if (!displayed) {
+            Response response = ApiSteps.signInWithSignInRequest(new SignInRequest(newEmail, SHORT_PASSWORD));
+
+            if (response.getStatusCode() == 200) {
+                String accessToken = response.then().extract().as(SuccessSignUp.class).getAccessToken();
+                ApiSteps.deleteUser(accessToken);
+            }
+        }
+        Assert.assertTrue(displayed);
     }
 }
